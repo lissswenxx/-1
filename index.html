@@ -1,0 +1,561 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система учета студентов | EduTrack</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Система учета студентов</h1>
+            <p>Управление успеваемостью и оценками</p>
+        </header>
+
+        <div class="role-selector">
+            <button class="role-btn" onclick="showPanel('student')">👨‍🎓 Я студент</button>
+            <button class="role-btn" onclick="showPanel('teacher')">👨‍🏫 Я преподаватель</button>
+            <button class="role-btn" onclick="showPanel('admin')">👨‍💼 Я администратор</button>
+        </div>
+
+        <!-- Панель студента -->
+        <div id="student-panel" class="panel">
+            <h2>📚 Личный кабинет студента</h2>
+            
+            <div class="search-section">
+                <label>ID студента:</label>
+                <input type="number" id="student-id" placeholder="Введите ID студента" value="1">
+                <button onclick="loadStudentData()" class="btn-primary">Загрузить данные</button>
+            </div>
+
+            <div id="student-info" class="info-cards">
+                <div class="info-card">
+                    <div class="card-icon">👨‍🎓</div>
+                    <div class="card-label">ФИО</div>
+                    <div class="card-value" id="student-name">Иван Иванов</div>
+                </div>
+                <div class="info-card">
+                    <div class="card-icon">📧</div>
+                    <div class="card-label">Email</div>
+                    <div class="card-value" id="student-email">ivan@university.com</div>
+                </div>
+                <div class="info-card">
+                    <div class="card-icon">📚</div>
+                    <div class="card-label">Группа</div>
+                    <div class="card-value" id="student-group">ИВТ-21</div>
+                </div>
+                <div class="info-card">
+                    <div class="card-icon">🎓</div>
+                    <div class="card-label">Курс</div>
+                    <div class="card-value" id="student-course">3</div>
+                </div>
+            </div>
+
+            <div class="grades-section">
+                <h3>📊 Мои оценки</h3>
+                <table class="data-table" id="grades-table">
+                    <thead>
+                        <tr><th>Предмет</th><th>Оценка</th><th>Буква</th><th>Дата</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Математика</td><td>85</td><td><span class="grade-badge grade-B">B</span></td><td>2024-01-15</td></tr>
+                        <tr><td>Программирование</td><td>92</td><td><span class="grade-badge grade-A">A</span></td><td>2024-01-20</td></tr>
+                        <tr><td>Базы данных</td><td>78</td><td><span class="grade-badge grade-C">C</span></td><td>2024-01-18</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="gpa-card" id="gpa-card">
+                <h3>Средний балл (GPA)</h3>
+                <div class="gpa-value">85.00</div>
+                <div class="gpa-label">из 100 баллов</div>
+            </div>
+
+            <button class="btn-appeal" onclick="openAppealModal()">📝 Подать апелляцию</button>
+
+            <div class="appeals-section" id="appeals-section">
+                <h3>📋 Мои апелляции</h3>
+                <table class="data-table">
+                    <thead><tr><th>Оценка ID</th><th>Причина</th><th>Статус</th><th>Дата</th></tr></thead>
+                    <tbody>
+                        <tr><td>#1</td><td>Не согласен с оценкой</td><td><span class="status-pending">⏳ На рассмотрении</span></td><td>2024-01-25</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Панель преподавателя -->
+        <div id="teacher-panel" class="panel" style="display: none;">
+            <h2>📊 Панель преподавателя</h2>
+            
+            <div class="controls">
+                <select id="course-select" class="course-select">
+                    <option value="">Выберите курс</option>
+                    <option value="1">Математика (MATH101)</option>
+                    <option value="2">Программирование (CS201)</option>
+                    <option value="3">Базы данных (CS301)</option>
+                </select>
+                <button class="btn-secondary" onclick="loadCourseStudents()">Загрузить студентов</button>
+            </div>
+
+            <div id="course-statistics" class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-label">Средний балл</div>
+                    <div class="stat-value" id="avg-grade">85.2</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-label">Максимум</div>
+                    <div class="stat-value" id="max-grade">98</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📉</div>
+                    <div class="stat-label">Минимум</div>
+                    <div class="stat-value" id="min-grade">65</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-label">Всего студентов</div>
+                    <div class="stat-value" id="total-students">15</div>
+                </div>
+            </div>
+
+            <div class="students-section">
+                <div class="section-header">
+                    <h3>👨‍🎓 Список студентов</h3>
+                    <button class="btn-primary" onclick="openGradeModal()">➕ Выставить оценку</button>
+                </div>
+                <table class="data-table" id="students-table">
+                    <thead>
+                        <tr><th>ID</th><th>ФИО</th><th>Группа</th><th>Курс</th><th>Текущая оценка</th><th>Действия</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Иван Иванов</td><td>ИВТ-21</td><td>3</td><td>85</td><td><button class="edit-btn" onclick="openGradeForStudent(1)">📝 Выставить</button></td></tr>
+                        <tr><td>2</td><td>Петр Петров</td><td>ИВТ-21</td><td>3</td><td>92</td><td><button class="edit-btn" onclick="openGradeForStudent(2)">📝 Выставить</button></td></tr>
+                        <tr><td>3</td><td>Мария Сидорова</td><td>ИВТ-21</td><td>3</td><td>78</td><td><button class="edit-btn" onclick="openGradeForStudent(3)">📝 Выставить</button></td></tr>
+                        <tr><td>4</td><td>Алексей Смирнов</td><td>ПМИ-22</td><td>2</td><td>95</td><td><button class="edit-btn" onclick="openGradeForStudent(4)">📝 Выставить</button></td></tr>
+                        <tr><td>5</td><td>Елена Козлова</td><td>ПМИ-22</td><td>2</td><td>88</td><td><button class="edit-btn" onclick="openGradeForStudent(5)">📝 Выставить</button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Панель администратора -->
+        <div id="admin-panel" class="panel" style="display: none;">
+            <h2>⚙️ Панель администратора</h2>
+            
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="showAdminTab('students')">👥 Студенты</button>
+                <button class="tab-btn" onclick="showAdminTab('courses')">📖 Курсы</button>
+                <button class="tab-btn" onclick="showAdminTab('teachers')">👨‍🏫 Преподаватели</button>
+                <button class="tab-btn" onclick="showAdminTab('appeals')">📋 Апелляции</button>
+            </div>
+
+            <!-- Вкладка Студенты -->
+            <div id="admin-students" class="admin-tab-content">
+                <div class="section-header">
+                    <h3>👥 Управление студентами</h3>
+                    <button class="btn-primary" onclick="openStudentModal()">➕ Добавить студента</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>ID</th><th>ФИО</th><th>Email</th><th>Телефон</th><th>Группа</th><th>Курс</th><th>Действия</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Иван Иванов</td><td>ivan@mail.com</td><td>+7(999)123-45-67</td><td>ИВТ-21</td><td>3</td><td><button class="edit-btn" onclick="editStudent(1)">✏️</button> <button class="delete-btn" onclick="deleteStudent(1)">🗑️</button></td></tr>
+                        <tr><td>2</td><td>Петр Петров</td><td>petr@mail.com</td><td>+7(999)234-56-78</td><td>ИВТ-21</td><td>3</td><td><button class="edit-btn" onclick="editStudent(2)">✏️</button> <button class="delete-btn" onclick="deleteStudent(2)">🗑️</button></td></tr>
+                        <tr><td>3</td><td>Мария Сидорова</td><td>maria@mail.com</td><td>+7(999)345-67-89</td><td>ПМИ-22</td><td>2</td><td><button class="edit-btn" onclick="editStudent(3)">✏️</button> <button class="delete-btn" onclick="deleteStudent(3)">🗑️</button></td></tr>
+                        <tr><td>4</td><td>Алексей Смирнов</td><td>alex@mail.com</td><td>+7(999)456-78-90</td><td>ПМИ-22</td><td>2</td><td><button class="edit-btn" onclick="editStudent(4)">✏️</button> <button class="delete-btn" onclick="deleteStudent(4)">🗑️</button></td></tr>
+                        <tr><td>5</td><td>Елена Козлова</td><td>elena@mail.com</td><td>+7(999)567-89-01</td><td>ИС-21</td><td>3</td><td><button class="edit-btn" onclick="editStudent(5)">✏️</button> <button class="delete-btn" onclick="deleteStudent(5)">🗑️</button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Вкладка Курсы -->
+            <div id="admin-courses" class="admin-tab-content" style="display: none;">
+                <div class="section-header">
+                    <h3>📖 Управление курсами</h3>
+                    <button class="btn-primary" onclick="openCourseModal()">➕ Добавить курс</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>ID</th><th>Название</th><th>Код</th><th>Кредиты</th><th>Семестр</th><th>Преподаватель</th><th>Действия</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Математика</td><td>MATH101</td><td>4</td><td>Осень 2024</td><td>Проф. Смирнов</td><td><button class="edit-btn">✏️</button> <button class="delete-btn">🗑️</button></td></tr>
+                        <tr><td>2</td><td>Программирование</td><td>CS201</td><td>5</td><td>Осень 2024</td><td>Доц. Иванова</td><td><button class="edit-btn">✏️</button> <button class="delete-btn">🗑️</button></td></tr>
+                        <tr><td>3</td><td>Базы данных</td><td>CS301</td><td>4</td><td>Весна 2025</td><td>Проф. Петров</td><td><button class="edit-btn">✏️</button> <button class="delete-btn">🗑️</button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Вкладка Преподаватели -->
+            <div id="admin-teachers" class="admin-tab-content" style="display: none;">
+                <div class="section-header">
+                    <h3>👨‍🏫 Управление преподавателями</h3>
+                    <button class="btn-primary" onclick="openTeacherModal()">➕ Добавить преподавателя</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>ID</th><th>ФИО</th><th>Email</th><th>Кафедра</th><th>Действия</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Проф. Смирнов</td><td>smirnov@university.com</td><td>Математики</td><td><button class="edit-btn">✏️</button> <button class="delete-btn">🗑️</button></td></tr>
+                        <tr><td>2</td><td>Доц. Иванова</td><td>ivanova@university.com</td><td>Информатики</td><td><button class="edit-btn">✏️</button> <button class="delete-btn">🗑️</button></td></tr>
+                        <tr><td>3</td><td>Проф. Петров</td><td>petrov@university.com</td><td>Информатики</td><td><button class="edit-btn">✏️</button> <button class="delete-btn">🗑️</button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Вкладка Апелляции -->
+            <div id="admin-appeals" class="admin-tab-content" style="display: none;">
+                <h3>📋 Все апелляции</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>ID</th><th>Студент</th><th>Оценка ID</th><th>Причина</th><th>Статус</th><th>Дата</th><th>Действия</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Иван Иванов</td><td>#1</td><td>Не согласен с оценкой</td><td><span class="status-pending">⏳ На рассмотрении</span></td><td>2024-01-25</td><td><button class="edit-btn">✅ Одобрить</button> <button class="delete-btn">❌ Отклонить</button></td></tr>
+                        <tr><td>2</td><td>Мария Сидорова</td><td>#3</td><td>Прошу пересмотреть</td><td><span class="status-approved">✅ Одобрено</span></td><td>2024-01-26</td><td><button class="edit-btn">✅ Одобрить</button> <button class="delete-btn">❌ Отклонить</button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для апелляции -->
+    <div id="appeal-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📝 Подача апелляции</h3>
+                <span class="close" onclick="closeModal('appeal-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>ID студента:</label>
+                    <input type="number" id="appeal-student-id" placeholder="Введите ID студента">
+                </div>
+                <div class="form-group">
+                    <label>ID оценки:</label>
+                    <input type="number" id="appeal-grade-id" placeholder="Введите ID оценки">
+                </div>
+                <div class="form-group">
+                    <label>Причина апелляции:</label>
+                    <textarea id="appeal-reason" rows="4" placeholder="Опишите причину..."></textarea>
+                </div>
+                <button class="btn-primary" onclick="submitAppeal()">Отправить апелляцию</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для выставления оценки -->
+    <div id="grade-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📝 Выставление оценки</h3>
+                <span class="close" onclick="closeModal('grade-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>ID студента:</label>
+                    <input type="number" id="grade-student-id" placeholder="Введите ID студента">
+                </div>
+                <div class="form-group">
+                    <label>ID курса:</label>
+                    <input type="number" id="grade-course-id" placeholder="Введите ID курса">
+                </div>
+                <div class="form-group">
+                    <label>Оценка (0-100):</label>
+                    <input type="number" id="grade-value" step="0.1" min="0" max="100" placeholder="Введите оценку">
+                </div>
+                <div class="form-group">
+                    <label>Комментарий:</label>
+                    <textarea id="grade-comment" rows="3" placeholder="Комментарий..."></textarea>
+                </div>
+                <button class="btn-primary" onclick="submitGrade()">Выставить оценку</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для студента (админ) -->
+    <div id="student-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="student-modal-title">➕ Добавить студента</h3>
+                <span class="close" onclick="closeModal('student-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Имя:</label>
+                    <input type="text" id="student-first-name" placeholder="Введите имя">
+                </div>
+                <div class="form-group">
+                    <label>Фамилия:</label>
+                    <input type="text" id="student-last-name" placeholder="Введите фамилию">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="student-email-input" placeholder="example@mail.com">
+                </div>
+                <div class="form-group">
+                    <label>Телефон:</label>
+                    <input type="text" id="student-phone" placeholder="+7(999)123-45-67">
+                </div>
+                <div class="form-group">
+                    <label>Группа:</label>
+                    <input type="text" id="student-group-input" placeholder="ИВТ-21">
+                </div>
+                <div class="form-group">
+                    <label>Курс:</label>
+                    <input type="number" id="student-course-input" min="1" max="6" placeholder="1-6">
+                </div>
+                <button class="btn-primary" onclick="saveStudent()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для курса -->
+    <div id="course-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>➕ Добавить курс</h3>
+                <span class="close" onclick="closeModal('course-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Название курса:</label>
+                    <input type="text" id="course-title" placeholder="Введите название">
+                </div>
+                <div class="form-group">
+                    <label>Код курса:</label>
+                    <input type="text" id="course-code" placeholder="CS101">
+                </div>
+                <div class="form-group">
+                    <label>Кредиты:</label>
+                    <input type="number" id="course-credits" min="1" max="6" placeholder="3">
+                </div>
+                <div class="form-group">
+                    <label>Семестр:</label>
+                    <input type="text" id="course-semester" placeholder="Осень 2024">
+                </div>
+                <div class="form-group">
+                    <label>Преподаватель ID:</label>
+                    <input type="number" id="course-teacher-id" placeholder="ID преподавателя">
+                </div>
+                <button class="btn-primary" onclick="saveCourse()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для преподавателя -->
+    <div id="teacher-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>➕ Добавить преподавателя</h3>
+                <span class="close" onclick="closeModal('teacher-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Имя:</label>
+                    <input type="text" id="teacher-first-name" placeholder="Введите имя">
+                </div>
+                <div class="form-group">
+                    <label>Фамилия:</label>
+                    <input type="text" id="teacher-last-name" placeholder="Введите фамилию">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="teacher-email" placeholder="teacher@university.com">
+                </div>
+                <div class="form-group">
+                    <label>Кафедра:</label>
+                    <input type="text" id="teacher-department" placeholder="Информатики">
+                </div>
+                <button class="btn-primary" onclick="saveTeacher()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-overlay" class="modal-overlay" onclick="closeAllModals()"></div>
+
+    <script>
+        // Переключение панелей
+        function showPanel(role) {
+            document.getElementById('student-panel').style.display = 'none';
+            document.getElementById('teacher-panel').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'none';
+            
+            if (role === 'student') {
+                document.getElementById('student-panel').style.display = 'block';
+            } else if (role === 'teacher') {
+                document.getElementById('teacher-panel').style.display = 'block';
+            } else if (role === 'admin') {
+                document.getElementById('admin-panel').style.display = 'block';
+            }
+        }
+
+        // Вкладки администратора
+        function showAdminTab(tab) {
+            document.getElementById('admin-students').style.display = 'none';
+            document.getElementById('admin-courses').style.display = 'none';
+            document.getElementById('admin-teachers').style.display = 'none';
+            document.getElementById('admin-appeals').style.display = 'none';
+            
+            document.getElementById(`admin-${tab}`).style.display = 'block';
+            
+            // Обновляем активную кнопку
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Модальные окна
+        function openAppealModal() {
+            document.getElementById('appeal-modal').classList.add('active');
+            document.getElementById('modal-overlay').classList.add('active');
+        }
+
+        function openGradeModal() {
+            document.getElementById('grade-modal').classList.add('active');
+            document.getElementById('modal-overlay').classList.add('active');
+        }
+
+        function openGradeForStudent(studentId) {
+            document.getElementById('grade-student-id').value = studentId;
+            openGradeModal();
+        }
+
+        function openStudentModal() {
+            document.getElementById('student-modal-title').textContent = '➕ Добавить студента';
+            document.getElementById('student-modal').classList.add('active');
+            document.getElementById('modal-overlay').classList.add('active');
+            document.getElementById('student-modal').querySelector('form')?.reset();
+        }
+
+        function editStudent(id) {
+            document.getElementById('student-modal-title').textContent = '✏️ Редактировать студента';
+            document.getElementById('student-modal').classList.add('active');
+            document.getElementById('modal-overlay').classList.add('active');
+        }
+
+        function deleteStudent(id) {
+            if (confirm('Вы уверены, что хотите удалить этого студента?')) {
+                alert('Студент удален!');
+            }
+        }
+
+        function openCourseModal() {
+            document.getElementById('course-modal').classList.add('active');
+            document.getElementById('modal-overlay').classList.add('active');
+        }
+
+        function openTeacherModal() {
+            document.getElementById('teacher-modal').classList.add('active');
+            document.getElementById('modal-overlay').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.getElementById('modal-overlay').classList.remove('active');
+        }
+
+        function closeAllModals() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('active');
+            });
+            document.getElementById('modal-overlay').classList.remove('active');
+        }
+
+        // Функции для работы с данными (демо)
+        function loadStudentData() {
+            const studentId = document.getElementById('student-id').value;
+            alert(`Загрузка данных студента ID: ${studentId}`);
+        }
+
+        function loadCourseStudents() {
+            const course = document.getElementById('course-select').value;
+            alert(`Загрузка студентов курса: ${course}`);
+        }
+
+        function submitAppeal() {
+            const studentId = document.getElementById('appeal-student-id').value;
+            const gradeId = document.getElementById('appeal-grade-id').value;
+            const reason = document.getElementById('appeal-reason').value;
+            
+            if (studentId && gradeId && reason) {
+                alert(`Апелляция подана!\nСтудент ID: ${studentId}\nОценка ID: ${gradeId}\nПричина: ${reason}`);
+                closeModal('appeal-modal');
+            } else {
+                alert('Заполните все поля!');
+            }
+        }
+
+        function submitGrade() {
+            const studentId = document.getElementById('grade-student-id').value;
+            const courseId = document.getElementById('grade-course-id').value;
+            const grade = document.getElementById('grade-value').value;
+            const comment = document.getElementById('grade-comment').value;
+            
+            if (studentId && courseId && grade) {
+                alert(`Оценка выставлена!\nСтудент ID: ${studentId}\nКурс ID: ${courseId}\nОценка: ${grade}\nКомментарий: ${comment}`);
+                closeModal('grade-modal');
+            } else {
+                alert('Заполните все обязательные поля!');
+            }
+        }
+
+        function saveStudent() {
+            const firstName = document.getElementById('student-first-name').value;
+            const lastName = document.getElementById('student-last-name').value;
+            const email = document.getElementById('student-email-input').value;
+            const group = document.getElementById('student-group-input').value;
+            const course = document.getElementById('student-course-input').value;
+            
+            if (firstName && lastName && email && group && course) {
+                alert(`Студент сохранен!\n${firstName} ${lastName}\n${email}\nГруппа: ${group}\nКурс: ${course}`);
+                closeModal('student-modal');
+            } else {
+                alert('Заполните все поля!');
+            }
+        }
+
+        function saveCourse() {
+            const title = document.getElementById('course-title').value;
+            const code = document.getElementById('course-code').value;
+            const credits = document.getElementById('course-credits').value;
+            const semester = document.getElementById('course-semester').value;
+            
+            if (title && code && credits && semester) {
+                alert(`Курс сохранен!\n${title} (${code})\nКредиты: ${credits}\nСеместр: ${semester}`);
+                closeModal('course-modal');
+            } else {
+                alert('Заполните все поля!');
+            }
+        }
+
+        function saveTeacher() {
+            const firstName = document.getElementById('teacher-first-name').value;
+            const lastName = document.getElementById('teacher-last-name').value;
+            const email = document.getElementById('teacher-email').value;
+            const department = document.getElementById('teacher-department').value;
+            
+            if (firstName && lastName && email && department) {
+                alert(`Преподаватель сохранен!\n${firstName} ${lastName}\n${email}\nКафедра: ${department}`);
+                closeModal('teacher-modal');
+            } else {
+                alert('Заполните все поля!');
+            }
+        }
+
+        // Закрытие по ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+    </script>
+</body>
+</html>

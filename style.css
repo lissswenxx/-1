@@ -1,0 +1,616 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #F5F5F5;
+    padding: 24px;
+}
+
+/* Контейнер */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Header */
+header {
+    background: #FFFFFF;
+    padding: 24px 32px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 8px;
+}
+
+header p {
+    font-size: 14px;
+    color: #666666;
+}
+
+/* Кнопки выбора роли */
+.role-selector {
+    display: flex;
+    gap: 12px;
+    padding: 24px 32px;
+    background: #FAFAFA;
+    border-bottom: 1px solid #E5E5E5;
+    flex-wrap: wrap;
+}
+
+.role-btn {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #D9D9D9;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #FFFFFF;
+    color: #333333;
+}
+
+.role-btn:hover {
+    background: #F0F0F0;
+    border-color: #BFBFBF;
+}
+
+/* Панели */
+.panel {
+    padding: 32px;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.panel h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #1A1A1A;
+    display: inline-block;
+}
+
+/* Поиск */
+.search-section {
+    background: #FAFAFA;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    border: 1px solid #E5E5E5;
+}
+
+.search-section label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+}
+
+.search-section input {
+    padding: 8px 12px;
+    border: 1px solid #D9D9D9;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 160px;
+}
+
+.search-section input:focus {
+    outline: none;
+    border-color: #999999;
+}
+
+/* Карточки информации */
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.info-card {
+    background: #FAFAFA;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #E5E5E5;
+}
+
+.card-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.card-label {
+    font-size: 11px;
+    color: #999999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.card-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A1A1A;
+}
+
+/* Секции */
+.grades-section,
+.appeals-section,
+.students-section {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid #E5E5E5;
+}
+
+.grades-section h3,
+.appeals-section h3,
+.students-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 16px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Таблицы */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.data-table th {
+    background: #FAFAFA;
+    font-weight: 600;
+    color: #333333;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.data-table tr:hover {
+    background: #FAFAFA;
+}
+
+/* Бейджи оценок */
+.grade-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.grade-A { background: #E8F5E9; color: #2E7D32; }
+.grade-B { background: #E3F2FD; color: #1565C0; }
+.grade-C { background: #FFF3E0; color: #E65100; }
+.grade-D { background: #FFF8E1; color: #F57F17; }
+.grade-F { background: #FFEBEE; color: #C62828; }
+
+/* Бейджи статусов */
+.status-pending {
+    background: #FFF3E0;
+    color: #E65100;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.status-approved {
+    background: #E8F5E9;
+    color: #2E7D32;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+/* GPA карточка */
+.gpa-card {
+    background: #FAFAFA;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 24px;
+    border: 1px solid #E5E5E5;
+}
+
+.gpa-card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666666;
+    margin-bottom: 8px;
+}
+
+.gpa-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1A1A1A;
+}
+
+.gpa-label {
+    font-size: 12px;
+    color: #999999;
+}
+
+/* Кнопки */
+.btn-primary,
+.btn-secondary,
+.btn-appeal {
+    padding: 8px 20px;
+    border: 1px solid #D9D9D9;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #FFFFFF;
+    color: #333333;
+}
+
+.btn-primary {
+    background: #1A1A1A;
+    border-color: #1A1A1A;
+    color: #FFFFFF;
+}
+
+.btn-primary:hover {
+    background: #333333;
+}
+
+.btn-secondary {
+    background: #FFFFFF;
+    border-color: #D9D9D9;
+}
+
+.btn-secondary:hover {
+    background: #F5F5F5;
+}
+
+.btn-appeal {
+    background: #FFFFFF;
+    border-color: #D9D9D9;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.btn-appeal:hover {
+    background: #F5F5F5;
+}
+
+/* Кнопки действий */
+.edit-btn,
+.delete-btn {
+    padding: 4px 10px;
+    border: 1px solid #D9D9D9;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin: 0 2px;
+    background: #FFFFFF;
+    color: #333333;
+}
+
+.edit-btn:hover {
+    background: #F0F0F0;
+}
+
+.delete-btn:hover {
+    background: #FFEBEE;
+    border-color: #EF9A9A;
+    color: #C62828;
+}
+
+/* Статистика */
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: #FAFAFA;
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #E5E5E5;
+}
+
+.stat-icon {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #999999;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1A1A1A;
+}
+
+/* Контролы */
+.controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.course-select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #D9D9D9;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #FFFFFF;
+    cursor: pointer;
+}
+
+.course-select:focus {
+    outline: none;
+    border-color: #999999;
+}
+
+/* Вкладки администратора */
+.admin-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #E5E5E5;
+    padding-bottom: 12px;
+}
+
+.tab-btn {
+    padding: 8px 20px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    color: #666666;
+}
+
+.tab-btn:hover {
+    background: #F5F5F5;
+}
+
+.tab-btn.active {
+    background: #1A1A1A;
+    color: #FFFFFF;
+}
+
+.admin-tab-content {
+    animation: fadeIn 0.2s ease;
+}
+
+/* Модальные окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: 480px;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-content {
+    background: #FFFFFF;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    padding: 16px 20px;
+    background: #FAFAFA;
+    border-bottom: 1px solid #E5E5E5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A1A1A;
+}
+
+.modal-header .close {
+    font-size: 24px;
+    cursor: pointer;
+    color: #999999;
+}
+
+.modal-header .close:hover {
+    color: #333333;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+/* Формы */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333333;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #D9D9D9;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #999999;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Оверлей */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+}
+
+.modal-overlay.active {
+    display: block;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+    }
+    
+    .panel {
+        padding: 20px;
+    }
+    
+    .role-selector,
+    .panel h2 {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .data-table {
+        font-size: 11px;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 8px;
+    }
+    
+    .admin-tabs {
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .controls {
+        flex-direction: column;
+    }
+    
+    .search-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-section input {
+        width: 100%;
+    }
+}
+
+/* Цветовая палитра для Figma */
+:root {
+    --primary: #1A1A1A;
+    --primary-light: #333333;
+    --secondary: #666666;
+    --border: #E5E5E5;
+    --border-light: #F0F0F0;
+    --background: #FAFAFA;
+    --white: #FFFFFF;
+    --success: #2E7D32;
+    --success-bg: #E8F5E9;
+    --warning: #E65100;
+    --warning-bg: #FFF3E0;
+    --error: #C62828;
+    --error-bg: #FFEBEE;
+    --info: #1565C0;
+    --info-bg: #E3F2FD;
+}
+
+/* Утилиты */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
